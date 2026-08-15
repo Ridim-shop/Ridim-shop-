@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>আমার ওয়েবসাইট — চ্যাটবট টেস্ট</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f2f4f7;
+    margin: 0;
+    padding: 40px 20px;
+  }
+  .page-title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+  }
+
+  /* --- চ্যাট বাটন --- */
+  #chat-toggle-btn {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #2563eb;
+    color: white;
+    border: none;
+    font-size: 26px;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    z-index: 1000;
+  }
+
+  /* --- চ্যাট উইন্ডো --- */
+  #chat-window {
+    position: fixed;
+    bottom: 96px;
+    right: 24px;
+    width: 340px;
+    max-width: 90vw;
+    height: 460px;
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 1000;
+  }
+  #chat-header {
+    background: #2563eb;
+    color: white;
+    padding: 14px 16px;
+    font-weight: 600;
+  }
+  #chat-messages {
+    flex: 1;
+    padding: 14px;
+    overflow-y: auto;
+    background: #f9fafb;
+  }
+  .msg {
+    max-width: 80%;
+    padding: 9px 13px;
+    margin-bottom: 10px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.4;
+    clear: both;
+  }
+  .msg.bot {
+    background: #e5e7eb;
+    color: #111;
+    float: left;
+    border-bottom-left-radius: 2px;
+  }
+  .msg.user {
+    background: #2563eb;
+    color: white;
+    float: right;
+    border-bottom-right-radius: 2px;
+  }
+  #chat-input-area {
+    display: flex;
+    border-top: 1px solid #e5e7eb;
+  }
+  #chat-input {
+    flex: 1;
+    border: none;
+    padding: 12px;
+    font-size: 14px;
+    outline: none;
+  }
+  #chat-send {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 0 18px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+</style>
+</head>
+<body>
+
+<h2 class="page-title">এটি আপনার ওয়েবসাইটের ডেমো পেজ — নিচের ডানে চ্যাট আইকনে ক্লিক করুন</h2>
+
+<!-- চ্যাট বাটন -->
+<button id="chat-toggle-btn" onclick="toggleChat()">💬</button>
+
+<!-- চ্যাট উইন্ডো -->
+<div id="chat-window">
+  <div id="chat-header">আমাদের সাথে চ্যাট করুন</div>
+  <div id="chat-messages"></div>
+  <div id="chat-input-area">
+    <input type="text" id="chat-input" placeholder="মেসেজ লিখুন..." onkeypress="if(event.key==='Enter') sendMessage()">
+    <button id="chat-send" onclick="sendMessage()">পাঠান</button>
+  </div>
+</div>
+
+<script>
+function toggleChat() {
+  const win = document.getElementById('chat-window');
+  const isOpen = win.style.display === 'flex';
+  win.style.display = isOpen ? 'none' : 'flex';
+  if (!isOpen && document.getElementById('chat-messages').childElementCount === 0) {
+    addMessage('আসসালামু আলাইকুম! আপনাকে কীভাবে সাহায্য করতে পারি?', 'bot');
+  }
+}
+
+function addMessage(text, sender) {
+  const messages = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = 'msg ' + sender;
+  div.textContent = text;
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
+}
+
+async function sendMessage() {
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+
+  addMessage(text, 'user');
+  input.value = '';
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text })
+    });
+    const data = await res.json();
+    addMessage(data.reply, 'bot');
+  } catch (err) {
+    addMessage('দুঃখিত, সার্ভারের সাথে সংযোগ করা যাচ্ছে না।', 'bot');
+  }
+}
+</script>
+
+</body>
+</html>
