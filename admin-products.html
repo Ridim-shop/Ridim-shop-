@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>পণ্য ব্যবস্থাপনা | Ridim Shop Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-slate-100 text-slate-900 flex flex-col min-h-screen">
+
+  <!-- Admin Header -->
+  <header class="bg-slate-900 text-white sticky top-0 z-40 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-emerald-500 font-bold flex items-center justify-center text-white">R</div>
+        <a href="/admin.html" class="font-extrabold text-lg text-white tracking-tight">Ridim Shop Admin</a>
+      </div>
+
+      <nav class="hidden md:flex items-center gap-6 text-xs font-bold text-slate-300">
+        <a href="/admin.html" class="hover:text-emerald-400 transition">ড্যাশবোর্ড</a>
+        <a href="/admin-products.html" class="text-emerald-400 font-extrabold">পণ্য ম্যানেজমেন্ট</a>
+        <a href="/admin-orders.html" class="hover:text-emerald-400 transition">অর্ডার সমূহ</a>
+        <a href="/admin-customers.html" class="hover:text-emerald-400 transition">কাস্টমার তালিকা</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <a href="/index.html" target="_blank" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-2 rounded-lg font-bold transition">🌐 ওয়েবসাইট</a>
+        <button id="admin-logout-btn" class="text-xs bg-rose-600 hover:bg-rose-700 text-white px-3 py-2 rounded-lg font-bold">🚪 লগআউট</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-8 space-y-6">
+    
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+      <div>
+        <h1 class="text-2xl font-black text-slate-900">পণ্য ব্যবস্থাপনা (Product Management)</h1>
+        <p class="text-xs text-slate-500">স্টোরের নতুন পণ্য যোগ করুন, তথ্য এডিট বা মুছে ফেলুন</p>
+      </div>
+      <button id="add-product-btn" class="btn-primary text-xs font-bold py-2.5 px-5 shadow-md">
+        ➕ নতুন পণ্য যুক্ত করুন
+      </button>
+    </div>
+
+    <!-- Products Table Card -->
+    <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-slate-50 text-[11px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200">
+              <th class="py-3 px-4">ছবি</th>
+              <th class="py-3 px-4">পণ্যের নাম</th>
+              <th class="py-3 px-4">ক্যাটাগরি</th>
+              <th class="py-3 px-4">মূল্য (Price)</th>
+              <th class="py-3 px-4">স্টক (Stock)</th>
+              <th class="py-3 px-4">স্ট্যাটাস</th>
+              <th class="py-3 px-4">অ্যাকশন</th>
+            </tr>
+          </thead>
+          <tbody id="admin-products-tbody">
+            <!-- Rendered dynamically by js/admin.js -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Modal for Add / Edit Product -->
+  <div id="product-modal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-2xl w-full p-6 md:p-8 shadow-2xl animate-fade-in max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b pb-3 mb-4">
+        <h3 id="modal-title" class="text-lg font-extrabold text-slate-900">নতুন পণ্য যোগ করুন</h3>
+        <button id="close-product-modal" class="p-1 rounded-lg text-slate-400 hover:text-slate-800 text-xl font-bold">&times;</button>
+      </div>
+
+      <form id="product-form" class="space-y-4 text-xs">
+        <input type="hidden" id="product-id" />
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">পণ্যের নাম (বাংলা) *</label>
+            <input type="text" id="p-name" required placeholder="যেমন: টি৮০০ আল্ট্রা স্মার্টওয়াচ" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500" />
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">পণ্যের নাম (English)</label>
+            <input type="text" id="p-name-en" placeholder="e.g. T800 Ultra Smartwatch" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">ক্যাটাগরি *</label>
+            <select id="p-category" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+              <option value="electronics">ইলেকট্রনিক্স (Electronics)</option>
+              <option value="fashion">ফ্যাশন ও পোশাক (Fashion)</option>
+              <option value="gadgets">স্মার্ট গ্যাজেটস (Gadgets)</option>
+              <option value="grocery">গ্রোসারি (Grocery)</option>
+              <option value="home">হোম ও কিচেন (Home)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">রেগুলার মূল্য (৳) *</label>
+            <input type="number" id="p-price" required placeholder="1800" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500" />
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">ডিসকাউন্ট মূল্য (৳)</label>
+            <input type="number" id="p-discount-price" placeholder="1250" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">স্টক পরিমাণ (Stock Pcs) *</label>
+            <input type="number" id="p-stock" required value="20" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500" />
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">পণ্যের ছবির লিংক (Image URL)</label>
+            <input type="url" id="p-image" placeholder="https://..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">পণ্যের বর্ণনা (Description)</label>
+          <textarea id="p-description" rows="3" placeholder="পণ্যের গুণাবলী ও বৈশিষ্ট্য লিখুন..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
+        </div>
+
+        <div class="pt-3 flex justify-end gap-3 border-t">
+          <button type="button" onclick="document.getElementById('product-modal').classList.add('hidden')" class="bg-slate-100 hover:bg-slate-200 font-bold px-4 py-2 rounded-xl text-slate-700">বাতিল</button>
+          <button type="submit" class="btn-primary font-bold px-6 py-2">সেভ করুন</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="/js/app.js"></script>
+  <script type="module" src="/js/admin.js"></script>
+</body>
+</html>

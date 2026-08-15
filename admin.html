@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>এডমিন প্যানেল - ড্যাশবোর্ড | Ridim Shop Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-slate-100 text-slate-900 flex flex-col min-h-screen">
+
+  <!-- Admin Header / Navbar -->
+  <header class="bg-slate-900 text-white sticky top-0 z-40 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-emerald-500 font-bold flex items-center justify-center text-white">R</div>
+        <a href="/admin.html" class="font-extrabold text-lg text-white tracking-tight">Ridim Shop Admin</a>
+      </div>
+
+      <nav class="hidden md:flex items-center gap-6 text-xs font-bold text-slate-300">
+        <a href="/admin.html" class="text-emerald-400 font-extrabold">ড্যাশবোর্ড</a>
+        <a href="/admin-products.html" class="hover:text-emerald-400 transition">পণ্য ম্যানেজমেন্ট</a>
+        <a href="/admin-orders.html" class="hover:text-emerald-400 transition">অর্ডার সমূহ</a>
+        <a href="/admin-customers.html" class="hover:text-emerald-400 transition">কাস্টমার তালিকা</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <a href="/index.html" target="_blank" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-2 rounded-lg font-bold transition flex items-center gap-1">
+          🌐 ওয়েবসাইট দেখুন
+        </a>
+        <button id="admin-logout-btn" class="text-xs bg-rose-600 hover:bg-rose-700 text-white px-3 py-2 rounded-lg font-bold transition">
+          🚪 লগআউট
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-8 space-y-8">
+    
+    <!-- Title & Navigation -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+      <div>
+        <h1 class="text-2xl font-black text-slate-900">এডমিন ওভারভিউ (Dashboard Overview)</h1>
+        <p class="text-xs text-slate-500">স্টোর লাইভ সেলস পরিসংখ্যান ও সাম্প্রতিক অর্ডার রিপোর্ট</p>
+      </div>
+
+      <div class="flex gap-2">
+        <a href="/admin-products.html" class="btn-primary text-xs font-bold py-2 px-4">+ নতুন পণ্য যোগ করুন</a>
+        <a href="/admin-orders.html" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold py-2 px-4 rounded-lg flex items-center gap-1">📦 সকল অর্ডার</a>
+      </div>
+    </div>
+
+    <!-- Stats Cards Container -->
+    <div id="admin-stats">
+      <!-- Rendered dynamically by js/admin.js -->
+    </div>
+
+    <!-- Recent Orders Section -->
+    <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
+      <div class="flex items-center justify-between border-b pb-3">
+        <h3 class="font-bold text-slate-900 text-base">সাম্প্রতিক অর্ডার সমূহ (Recent Orders)</h3>
+        <a href="/admin-orders.html" class="text-xs font-bold text-emerald-600 hover:underline">সব দেখুন →</a>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-slate-50 text-[11px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200">
+              <th class="py-3 px-4">অর্ডার আইডি</th>
+              <th class="py-3 px-4">গ্রাহকের নাম & ফোন</th>
+              <th class="py-3 px-4">মোট মূল্য</th>
+              <th class="py-3 px-4">পেমেন্ট মেথড</th>
+              <th class="py-3 px-4">স্ট্যাটাস</th>
+            </tr>
+          </thead>
+          <tbody id="recent-orders-table">
+            <!-- Rendered by js/admin.js -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Modal Admin Login Prompt -->
+  <div id="admin-login-modal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl animate-fade-in text-center">
+      <div class="w-12 h-12 rounded-2xl bg-slate-900 text-white font-black text-2xl flex items-center justify-center mx-auto mb-3 shadow-md">
+        🔐
+      </div>
+      <h2 class="text-2xl font-black text-slate-900 mb-1">এডমিন প্যানেল সিকিউর লগইন</h2>
+      <p class="text-xs text-slate-500 mb-6">এডমিন ড্যাশবোর্ডে প্রবেশ করতে লগইন করুন</p>
+
+      <form id="admin-login-form" class="space-y-4 text-left">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">এডমিন ইমেইল / ইউজারনেম</label>
+          <input 
+            type="text" 
+            id="admin-email" 
+            required 
+            value="admin@ridimshop.com" 
+            class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          />
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">এডমিন পাসওয়ার্ড</label>
+          <input 
+            type="password" 
+            id="admin-password" 
+            required 
+            value="admin123" 
+            class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          />
+        </div>
+
+        <button type="submit" class="bg-slate-900 hover:bg-slate-800 text-white w-full py-3 text-sm font-bold rounded-xl shadow-md transition">
+          🔓 ড্যাশবোর্ডে প্রবেশ করুন
+        </button>
+      </form>
+      <p class="text-[11px] text-slate-400 mt-4">ডিফল্ট ক্রেডেনশিয়াল: admin@ridimshop.com / admin123</p>
+    </div>
+  </div>
+
+  <script type="module" src="/js/app.js"></script>
+  <script type="module" src="/js/admin.js"></script>
+</body>
+</html>
